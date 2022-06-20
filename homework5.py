@@ -30,11 +30,12 @@ def add_client(conn, first_name, last_name, email, phone):
         conn.commit()
         # selecting id to insert into phone table's client_id to ensure relations to clients table
         client_id = cur.execute(
-            """SELECT id FROM clients where first_name = %s and last_name = %s RETURNING id;""", (first_name, last_name))
+            "SELECT id FROM clients where first_name = %s and last_name = %s;",
+            (first_name, last_name))
 
         # inserting client_id(selected above) and phone_number (based on user's input)
         cur.execute(
-            " INSERT INTO phone(client_id, phone_number) VALUES(client_id = %s, phone_number = %s);",
+            " INSERT INTO phone(client_id, phone_number) VALUES(%s,%s);",
             (client_id, phone),
         )
         conn.commit()
